@@ -37,14 +37,9 @@ fn main () {
     println!("Berechne: {0} + {1}", sample, pyramid - sample);
 
     match get_input() == pyramid {
-      true => {
-        println!("Richtig");
-        break;
-      },
-      false => {
-        println!("Falsch");
-        continue;
-      }
+      true => println!("Richtig"),
+      false => println!("Falsch. {0} ist richtig", pyramid),
     }
+    println!("---------------------");
   }
 }
