@@ -28,15 +28,18 @@ fn get_input () -> i64 {
 
 fn main () {
   let mut rng = rand::thread_rng();
+
   let low_bound = 2;
   let up_bound = 10;
+  let pyramid_range = Uniform::new_inclusive(low_bound, up_bound);
 
   println!("Lass uns rechnen in den Pyramiden von {0} bis {1}:", low_bound, up_bound);
   println!("-------------------------------------------------");
 
   loop {
-    let pyramid_range = Uniform::new_inclusive(low_bound, up_bound);
+    // Choose pyramid randomly
     let pyramid = pyramid_range.sample(&mut rng);
+    // Choose values inside pyramid randomly
     let sample_range = Uniform::new_inclusive(0,pyramid);
     let sample = sample_range.sample(&mut rng);
 
