@@ -3,7 +3,7 @@ extern crate rand;
 use rand::distributions::{Distribution, Uniform};
 use std::io;
 
-fn get_input () -> i64 {
+fn get_input () -> u64 {
   loop {
     // Reading from stdin failed in general
     let mut input = String::new();
@@ -13,27 +13,36 @@ fn get_input () -> i64 {
       continue;
     }
     // Conversion to integer succeeded
-    if let Ok(n) = input.trim().parse::<i64>()
+    if let Ok(n) = input.trim().parse::<u64>()
     {
       return n;
     }
     // Conversion to integer failed
     else
     {
-      println!("Keine Zahl gelesen. Nochmal");
+      println!("Keine natürliche Zahl gelesen. Nochmal");
       continue;
     }
   }
 }
 
+struct Counter {
+  right : u64,
+  wrong : u64,
+}
+
 fn main () {
   let mut rng = rand::thread_rng();
 
-  let low_bound = 2;
-  let up_bound = 10;
-  let pyramid_range = Uniform::new_inclusive(low_bound, up_bound);
+  let bounds = (2, 10);
+  let pyramid_range = Uniform::new_inclusive(bounds.0, bounds.1);
 
-  println!("Lass uns rechnen in den Pyramiden von {0} bis {1}:", low_bound, up_bound);
+  let mut counter: Counter = Counter {
+    right: 0,
+    wrong: 0,
+  };
+
+  println!("Lass uns rechnen in den Pyramiden von {0} bis {1}:", bounds.0, bounds.1);
   println!("-------------------------------------------------");
 
   loop {
@@ -46,9 +55,17 @@ fn main () {
     println!("Berechne: {0} + {1}", sample, pyramid - sample);
 
     match get_input() == pyramid {
-      true => println!("Richtig"),
-      false => println!("Falsch. {0} ist richtig", pyramid),
+      true => {
+          counter.right += 1;
+          println!("Richtig");
+      },
+      false => {
+          counter.wrong += 1;
+          println!("Falsch. {0} ist richtig", pyramid);
+      },
     }
-    println!("---------------------");
+    println!("-------------------------");
+    println!("Richtig: {0}, Falsch: {1}", counter.right, counter.wrong);
+    println!("-------------------------");
   }
 }
