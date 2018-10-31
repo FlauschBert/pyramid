@@ -26,6 +26,16 @@ fn get_input () -> u64 {
   }
 }
 
+// Pass immutable reference
+fn print_line (string : &String) {
+  let size = string.len();
+  let mut line = String::with_capacity(size);
+  for _char in 0..size {
+    line.push('-');
+  }
+  println!("{}", line);
+}
+
 struct Counter {
   right : u64,
   wrong : u64,
@@ -42,8 +52,9 @@ fn main () {
     wrong: 0,
   };
 
-  println!("Lass uns rechnen in den Pyramiden von {0} bis {1}:", bounds.0, bounds.1);
-  println!("-------------------------------------------------");
+  let title = format!("Lass uns rechnen in den Pyramiden von {0} bis {1}:", bounds.0, bounds.1);
+  println!("{}", title);
+  print_line(&title);
 
   loop {
     // Choose pyramid randomly
@@ -64,8 +75,12 @@ fn main () {
           println!("Falsch. {0} ist richtig", pyramid);
       },
     }
-    println!("-------------------------");
-    println!("Richtig: {0}, Falsch: {1}", counter.right, counter.wrong);
-    println!("-------------------------");
+
+    let counter_info = format!("Richtig: {0}, Falsch: {1}", counter.right, counter.wrong);
+    // Pass immutable reference (no move, std::String does not support copy trait)
+    print_line(&counter_info);
+    println!("{}", counter_info);
+    // Pass immutable reference (no move, std::String does not support copy trait)
+    print_line(&counter_info);
   }
 }
